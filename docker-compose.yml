@@ -1,0 +1,34 @@
+version: '3'
+services:
+        dbos:
+                image: mysql:5.7
+                volumes:
+                        - mysql_storage:/var/lib/mysql
+                restart: always
+                environment:
+                        MYSQL_ROOT_PASSWORD: rootpass
+                        MYSQL_USER: Nishtha
+                        MYSQL_PASSWORD: redhat
+                        MYSQL_DATABASE: mydb
+        redmineos:
+                image: redmine
+                restart: always
+                depends_on:
+                        - dbos
+                ports:
+                        - 1234:80
+                environment:
+                        REDMINE_DB_MYSQL: dbos
+                        REDMINE_DB_USERNAME: Nishtha
+                        REDMINE_DB_PASSWORD: redhat
+                        REDMINE_DB_DATABASE: mydb
+                        REDMINE_NO_DB_MIGRATE: 1
+                        REDMINE_SECRET_KEY_BASE: "secretkey"
+                volumes:
+                        - redmine_storage:/var/www/html
+volumes:
+        redmine_storage:
+        mysql_storage:
+
+
+
